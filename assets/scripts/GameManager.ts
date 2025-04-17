@@ -17,22 +17,31 @@ export class GameManager extends Component {
 
     @property(ScreenTransition)
     startToPlayTransition: ScreenTransition;
+    
+    @property(ScreenTransition)
+    retryTransition: ScreenTransition;
+
 
     isGameStarted = false;
 
     start() {
         input.on(Input.EventType.TOUCH_START, this.jump, this);
-        // setTimeout(()=>{
-        //     this.GameOverScreen.active = true
-        // }, 3000)
+        setTimeout(()=>{
+            this.GameOverScreen.active = true
+        }, 3000);
+
         this.startToPlayTransition.onTransition = () => {
+            this.isGameStarted = true;
+            this.prepareStartPosition();
+        };
+
+        this.retryTransition.onTransition = () => {
             this.isGameStarted = true;
             this.prepareStartPosition();
         };
     }
 
     private jump() {
-    
         let body = this.player.getComponent(RigidBody2D);
         body.applyLinearImpulseToCenter(new Vec2(0, 100), true);
     }
@@ -61,5 +70,3 @@ export class GameManager extends Component {
         
     }
 }
-
-
