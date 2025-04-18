@@ -14,7 +14,6 @@ export class GameLogic extends Component {
     @property(Prefab)
     nextColumn: Prefab;
 
-    isGameRunning = false;
     playerState: PlayerState = PlayerState.WAITING;
 
     start() {
@@ -22,13 +21,11 @@ export class GameLogic extends Component {
     }
 
     public startGame() {
-        this.isGameRunning = true;
         this.generateColumn();
         this.prepareStartPosition();
     }
 
     public resetGame() {
-        this.isGameRunning = false;
         this.playerState = PlayerState.WAITING;
     }
 
@@ -53,7 +50,6 @@ export class GameLogic extends Component {
         const offset = -40;
         return columnRightEdgeX + offset;
     }
-
 
     private generateColumn() {
         const canvas = director.getScene().getChildByName("Canvas");
@@ -86,7 +82,7 @@ export class GameLogic extends Component {
     }
     
     public jump() {
-        let body = this.player.getComponent(RigidBody2D);
+        const body = this.player.getComponent(RigidBody2D);
         body.applyLinearImpulseToCenter(new Vec2(0, 100), true);
         this.generateColumn();
     }

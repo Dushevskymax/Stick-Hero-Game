@@ -1,20 +1,15 @@
 import { _decorator, Component, Node, input, Input} from 'cc';
 import { GameState } from './GameState';
 import { GameLogic} from './GameLogic'; 
+import { ScreenManager} from '../UI/ScreenManager'; 
 
 const { ccclass, property } = _decorator;
 
 @ccclass('GameManager')
 export class GameManager extends Component {
 
-    @property(Node) 
-    StartScreen: Node;
-
-    @property(Node) 
-    PlayScreen: Node;
-
-    @property(Node) 
-    GameOverScreen: Node;
+    @property(ScreenManager)
+    screenManager: ScreenManager;
 
     @property(GameLogic)
     gameLogic: GameLogic; 
@@ -24,20 +19,16 @@ export class GameManager extends Component {
     public setGameState(state: GameState) {
         this.currentState = state;
     
-        this.StartScreen.active = (state === GameState.STARTSCREEN);
-        this.PlayScreen.active = (state === GameState.PLAYSCREEN);
-        this.GameOverScreen.active = (state === GameState.GAMEOVERSCREEN);
+        const stateActions = {
+            [GameState.STARTSCREEN]: () => this.gameLogic.resetGame(),
+            [GameState.PLAYSCREEN]: () => this.gameLogic.startGame(),
+            [GameState.GAMEOVERSCREEN]: () => {/* пока пусто */},
+        };
 
-        switch (state) {
-            case GameState.STARTSCREEN:
-                this.gameLogic.resetGame();
-                break;
-            case GameState.PLAYSCREEN:
-                this.gameLogic.startGame();
-                break;
-            case GameState.GAMEOVERSCREEN:
-                break;
-        }
+        stateActions[state]?.();
+        
+        this.screenManager.onGameStateChanged(state);
+
     }
     
     public onStartButtonPressed() {
