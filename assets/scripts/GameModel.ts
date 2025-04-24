@@ -2,7 +2,6 @@ import { IGameModel } from './Interfaces';
 
 export class GameModel implements IGameModel {
     private playerX: number = 0;
-    private stickLength: number = 0;
     private stickGrowing: boolean = false;
     private stickAngle: number = 0;
     private startColumn = { x: 0, width: 50 };
@@ -14,14 +13,6 @@ export class GameModel implements IGameModel {
 
     setPlayerX(x: number): void {
         this.playerX = x;
-    }
-
-    getStickLength(): number {
-        return this.stickLength;
-    }
-
-    setStickLength(length: number): void {
-        this.stickLength = length;
     }
 
     isStickGrowing(): boolean {
@@ -48,9 +39,12 @@ export class GameModel implements IGameModel {
         return this.nextColumn;
     }
 
+    setNextColumnX(x: number): void {
+        this.nextColumn.x = x;
+    }
+
     reset(): void {
         this.playerX = 0;
-        this.stickLength = 0;
         this.stickGrowing = false;
         this.stickAngle = 0;
         this.startColumn = { x: 0, width: 50 };
