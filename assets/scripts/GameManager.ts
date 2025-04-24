@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Prefab, input, Input } from 'cc';
+import { _decorator, Component, Node, Prefab, input, Input,director,UITransform } from 'cc';
 import { IGameModel, IGameView } from './Interfaces';
 import { GameModel } from './GameModel';
 import { GameView } from './GameView';
@@ -32,7 +32,7 @@ export class GameManager extends Component {
         this.view = this.getComponent(GameView)!;
         input.on(Input.EventType.TOUCH_START, this.onTouchStart, this);
         input.on(Input.EventType.TOUCH_END, this.onTouchEnd, this);
-        this.resetGame();
+        // this.resetGame();
     }
 
     private resetGame() {
@@ -49,19 +49,30 @@ export class GameManager extends Component {
 
     onStartButton() {
         this.isPlaying = true;
-        this.view!.hideStartScreen();
+        this.view!.showPlayScreen();
+
+        // this.view!.setupNextColumn();
+        // const canvas = director.getScene().getChildByName("Canvas");
+        // const canvasWidth = canvas.getComponent(UITransform)!.width;
+        // const startColumnWidth = this.view!['startColumnNode'].getComponent(UITransform)!.width;
+        // const startColumnX = -canvasWidth / 2 + this.view!.startColumnNode!.getComponent(UITransform)!.width;
+        // const playerX = startColumnX;
+        // const nextColumnX = this.view!.randomPosition - canvasWidth;
+        // this.animateInitialSetup(startColumnX, playerX, nextColumnX);
     }
 
     private onTouchStart() {
         if (!this.isPlaying) return;
         if (!this.model.isStickGrowing()) {
             this.model.setStickGrowing(true);
+            console.log('Палка растет')
         }
     }
 
     private onTouchEnd() {
         if (!this.isPlaying) return;
         if (this.model.isStickGrowing()) {
+            console.log('Палка не растет')
             this.model.setStickGrowing(false);
             this.model.setStickAngle(-90);
             this.view!.updateStick(this.model.getStickLength(), this.model.getStickAngle());
@@ -89,7 +100,6 @@ export class GameManager extends Component {
         }
     }
 
-    
     update(deltaTime: number) {
         if (this.model.isStickGrowing()) {
             const newLength = this.model.getStickLength() + 300 * deltaTime;

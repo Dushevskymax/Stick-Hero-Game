@@ -18,4 +18,8 @@ export interface IGameView {
     updateColumns(startX: number, startWidth: number, nextX: number, nextWidth: number): void;
     showStartScreen(): void;
     hideStartScreen(): void;
+    showPlayScreen(): void;
+    hidePlayScreen(): void;
+    showGameOverScreen(): void;
+    hideGameOverScreen(): void;
 }
