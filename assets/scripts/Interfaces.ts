@@ -16,7 +16,7 @@ export interface IGameModel {
 
 export interface IGameView {
     stickNode: Node | null;
-    updatePlayer(x: number): void;
+    updatePlayer(x: number, instant?: boolean): void;
     createStick(startX: number, startY: number): void;
     updateStick(scaleY: number, angle: number): void;
     updateColumns(startX: number, nextX: number): void;

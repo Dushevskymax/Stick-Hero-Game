@@ -32,11 +32,13 @@ export class GameView extends Component {
     }
 
     public resetScene() {
+        // Уничтожаем только известные динамические узлы
         [this.startColumnNode, this.nextColumnNode, this.playerNode, this.stickNode].forEach(node => {
             if (node) {
                 node.destroy();
             }
         });
+
         this.startColumnNode = this.nextColumnNode = this.playerNode = this.stickNode = null;
         this.setupScene();
     }
@@ -83,7 +85,7 @@ export class GameView extends Component {
         const maxPosition = 1.5 * canvasWidth - randomWidth / 2;
         this.randomPosition = Math.random() * (maxPosition - minPosition) + minPosition;
 
-        this.nextColumnNode.setPosition(this.randomPosition, this.canvasBottomY + columnHeight / 2, 0);
+        this.nextColumnNode.setPosition(canvasWidth / 2 + columnWidth, this.canvasBottomY + columnHeight / 2, 0);
         this.nextColumnNode.setSiblingIndex(2); 
     }
 
@@ -99,9 +101,13 @@ export class GameView extends Component {
         }
     }
 
-    updatePlayer(x: number) {
+    updatePlayer(x: number, instant: boolean = false) {
         if (this.playerNode) {
-            tween(this.playerNode).to(0.8, { position: new Vec3(x, this.playerNode.position.y, 0) }).start();
+            if (instant) {
+                this.playerNode.setPosition(x, this.playerNode.position.y, 0);
+            } else {
+                tween(this.playerNode).to(0.8, { position: new Vec3(x, this.playerNode.position.y, 0) }).start();
+            }
         }
     }
 
@@ -125,7 +131,6 @@ export class GameView extends Component {
 
     private dropStickInstant(stick: Node, callback: (stick: Node) => void) {
         stick.angle = -90;
-        this.stickNode = null;
         callback(stick);
     }
 
@@ -133,7 +138,6 @@ export class GameView extends Component {
         tween(stick)
             .to(0.25, { angle: -90 })
             .call(() => {
-                this.stickNode = null;
                 callback(stick);
             })
             .start();
@@ -152,7 +156,7 @@ export class GameView extends Component {
     animatePlayerToStickEnd(stickEndX: number, callback: () => void) {
         if (!this.playerNode) return;
         tween(this.playerNode)
-            .to(0.4, { position: new Vec3(stickEndX, this.playerNode.position.y, 0) })
+            .to(0.5, { position: new Vec3(stickEndX, this.playerNode.position.y, 0) })
             .call(callback)
             .start();
     }
@@ -175,7 +179,9 @@ export class GameView extends Component {
         const startColumnX = -canvasWidth / 2 + startColumnWidth;
         const playerX = startColumnX + playerWidth / 4;
         const nextColumnX = this.randomPosition - canvasWidth;
-        this.animateInitialSetup(startColumnX, playerX, nextColumnX);
+
+        this.updateColumns(startColumnX, nextColumnX);
+        this.updatePlayer(playerX);
     }
 
     showStartScreen() {

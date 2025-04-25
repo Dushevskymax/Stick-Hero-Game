@@ -20,12 +20,24 @@ export class GameManager extends Component {
     private growthSpeed: number = 2.5;
     private maxHeight: number = 1000;
     private currentScaleY: number = 0;
+    private isRetry: boolean = false;
 
     start() {
         this.view = this.gameView;
         input.on(Input.EventType.TOUCH_START, this.onTouchStart, this);
         input.on(Input.EventType.TOUCH_END, this.onTouchEnd, this);
-        this.resetGame();
+        this.isRetry = false;
+
+        // Инициализируем только модель, сцена уже настроена в GameView.start
+        this.model.reset();
+        const canvasWidth = this.view!.getCanvasWidth();
+        const startColumnWidth = this.view!.getStartColumnNode()!.getComponent(UITransform)!.width;
+        const playerWidth = this.view!.getPlayerNode()!.getComponent(UITransform)!.width;
+        const startColumnX = -canvasWidth / 2 + startColumnWidth / 2;
+        const playerX = startColumnX + playerWidth / 4;
+
+        this.model.setStartColumnX(startColumnX);
+        this.model.setPlayerX(playerX);
     }
 
     private resetGame() {
@@ -40,7 +52,14 @@ export class GameManager extends Component {
 
         this.model.setStartColumnX(startColumnX);
         this.model.setPlayerX(playerX);
-        this.model.setNextColumnX(this.view!.randomPosition);
+
+        if (this.isRetry) {
+            this.view!.setupNextColumn();
+            const nextColumnX = this.view!.randomPosition - canvasWidth;
+            this.model.setNextColumnX(nextColumnX);
+            this.view!.updateColumns(startColumnX, nextColumnX);
+            this.view!.updatePlayer(playerX, true);
+        }
 
         this.view!.showStartScreen();
     }
@@ -48,22 +67,28 @@ export class GameManager extends Component {
     onStartButton() {
         this.isPlaying = true;
         this.view!.showPlayScreen();
-        this.view!.setupNextColumn();
+
         const canvasWidth = this.view!.getCanvasWidth();
         const startColumnWidth = this.view!.getStartColumnNode()!.getComponent(UITransform)!.width;
         const playerWidth = this.view!.getPlayerNode()!.getComponent(UITransform)!.width;
         const startColumnX = -canvasWidth / 2 + startColumnWidth / 2;
         const playerX = startColumnX + playerWidth / 4;
-        const nextColumnX = this.view!.randomPosition - canvasWidth;
 
-        this.model.setStartColumnX(startColumnX);
-        this.model.setPlayerX(playerX);
-        this.model.setNextColumnX(nextColumnX);
-
-        this.view!.animateInitialSetup(startColumnX, playerX, nextColumnX);
+        let nextColumnX: number;
+        if (!this.isRetry) {
+            this.view!.setupNextColumn();
+            nextColumnX = this.view!.randomPosition - canvasWidth;
+            this.model.setStartColumnX(startColumnX);
+            this.model.setPlayerX(playerX);
+            this.model.setNextColumnX(nextColumnX);
+            this.view!.animateInitialSetup(startColumnX, playerX, nextColumnX);
+        } else {
+            nextColumnX = this.model.getNextColumnX();
+        }
     }
 
     onRetryButtonPressed() {
+        this.isRetry = true;
         this.resetGame();
         this.onStartButton();
     }
