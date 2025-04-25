@@ -8,20 +8,11 @@ const { ccclass, property } = _decorator;
 
 @ccclass('GameManager')
 export class GameManager extends Component {
-    @property(Prefab)
-    playerPrefab: Prefab;
-
-    @property(Prefab)
-    stickPrefab: Prefab;
-
-    @property(Prefab)
-    columnPrefab: Prefab;
-
-    @property(Node)
-    startScreen: Node;
-
-    @property(GameView)
-    gameView: GameView;
+    @property(Prefab) playerPrefab: Prefab = null;
+    @property(Prefab) stickPrefab: Prefab = null;
+    @property(Prefab) columnPrefab: Prefab = null;
+    @property(Node) startScreen: Node = null;
+    @property(GameView) gameView: GameView = null;
 
     private model: IGameModel = new GameModel();
     private view: IGameView | null = null;
@@ -40,13 +31,17 @@ export class GameManager extends Component {
     private resetGame() {
         this.isPlaying = false;
         this.model.reset();
-        this.view!.updateColumns(
-            this.model.getStartColumn().x,
-            this.model.getStartColumn().width,
-            this.model.getNextColumn().x,
-            this.model.getNextColumn().width
-        );
-        this.view!.updatePlayer(this.model.getPlayerX());
+        this.view!.resetScene();
+        const canvasWidth = this.view!.getCanvasWidth();
+        const startColumnWidth = this.view!.getStartColumnNode()!.getComponent(UITransform)!.width;
+        const playerWidth = this.view!.getPlayerNode()!.getComponent(UITransform)!.width;
+        const startColumnX = -canvasWidth / 2 + startColumnWidth / 2;
+        const playerX = startColumnX + playerWidth / 4;
+
+        this.model.setStartColumnX(startColumnX);
+        this.model.setPlayerX(playerX);
+        this.model.setNextColumnX(this.view!.randomPosition);
+
         this.view!.showStartScreen();
     }
 
@@ -54,57 +49,53 @@ export class GameManager extends Component {
         this.isPlaying = true;
         this.view!.showPlayScreen();
         this.view!.setupNextColumn();
-        const canvas = director.getScene().getChildByName("Canvas");
-        const canvasWidth = canvas.getComponent(UITransform)!.width;
-        const startColumnWidth = this.view!['startColumnNode'].getComponent(UITransform)!.width;
-        const playerWidth = this.view!['playerNode'].getComponent(UITransform)!.width;
+        const canvasWidth = this.view!.getCanvasWidth();
+        const startColumnWidth = this.view!.getStartColumnNode()!.getComponent(UITransform)!.width;
+        const playerWidth = this.view!.getPlayerNode()!.getComponent(UITransform)!.width;
         const startColumnX = -canvasWidth / 2 + startColumnWidth / 2;
-        const randomPosition = this.view!.randomPosition;
         const playerX = startColumnX + playerWidth / 4;
-        const nextColumnX = randomPosition - canvasWidth;
+        const nextColumnX = this.view!.randomPosition - canvasWidth;
 
-        this.model.getStartColumn().x = startColumnX;
+        this.model.setStartColumnX(startColumnX);
         this.model.setPlayerX(playerX);
         this.model.setNextColumnX(nextColumnX);
 
         this.view!.animateInitialSetup(startColumnX, playerX, nextColumnX);
     }
 
-    public onRetryButtonPressed() {
-        this.view!.showPlayScreen();
+    onRetryButtonPressed() {
+        this.resetGame();
+        this.onStartButton();
     }
 
     private onTouchStart() {
-        if (!this.isPlaying) return;
-        if (!this.model.isStickGrowing()) {
-            this.model.setStickGrowing(true);
-            this.currentScaleY = 0;
-            const startColumn = this.model.getStartColumn();
-            const startColumnWidth = this.view!['startColumnNode'].getComponent(UITransform)!.width;
-            const startColumnHeight = this.view!['startColumnNode'].getComponent(UITransform)!.height;
-            const startX = startColumn.x + startColumnWidth / 2;
-            const startY = this.view!['startColumnNode'].position.y + startColumnHeight / 2;
-            this.view!.createStick(startX, startY);
-            this.view!.updateStick(this.currentScaleY, this.model.getStickAngle());
-        }
+        if (!this.isPlaying || this.model.isStickGrowing()) return;
+        this.model.setStickGrowing(true);
+        this.currentScaleY = 0;
+        const startColumnX = this.model.getStartColumnX();
+        const startColumnWidth = this.view!.getStartColumnNode()!.getComponent(UITransform)!.width;
+        const startColumnHeight = this.view!.getStartColumnNode()!.getComponent(UITransform)!.height;
+        const startX = startColumnX + startColumnWidth / 2;
+        const startY = this.view!.getStartColumnNode()!.position.y + startColumnHeight / 2;
+        this.view!.createStick(startX, startY);
+        this.view!.updateStick(this.currentScaleY, this.model.getStickAngle());
     }
 
     private onTouchEnd() {
-        if (!this.isPlaying) return;
-        if (this.model.isStickGrowing()) {
-            this.model.setStickGrowing(false);
-            this.view!.dropStick((stick) => this.checkResult(stick));
-        }
+        if (!this.isPlaying || !this.model.isStickGrowing()) return;
+        this.model.setStickGrowing(false);
+        this.view!.dropStick((stick) => this.checkResult(stick));
     }
 
     private checkResult(stick: Node) {
         try {
-            const startColumn = this.view!['startColumnNode'];
-            const nextColumn = this.view!['nextColumnNode'];
+            const startColumn = this.view!.getStartColumnNode()!;
+            const nextColumn = this.view!.getNextColumnNode()!;
+            const player = this.view!.getPlayerNode()!;
 
-            const startTransform = startColumn.getComponent(UITransform);
-            const nextTransform = nextColumn.getComponent(UITransform);
-            const stickTransform = stick.getComponent(UITransform);
+            const startTransform = startColumn.getComponent(UITransform)!;
+            const nextTransform = nextColumn.getComponent(UITransform)!;
+            const stickTransform = stick.getComponent(UITransform)!;
 
             const startPos = startColumn.position;
             const nextPos = nextColumn.position;
@@ -116,15 +107,13 @@ export class GameManager extends Component {
             const nextLeftX = nextPos.x - nextTransform.width / 2;
             const nextRightX = nextPos.x + nextTransform.width / 2;
 
-            console.log(`Проверка результата: startRightX=${startRightX}, stickLength=${stickLength}, stickEndX=${stickEndX}, nextLeftX=${nextLeftX}, nextRightX=${nextRightX}`);
-
             if (stickEndX >= nextLeftX && stickEndX <= nextRightX) {
-                const playerWidth = this.view!['playerNode'].getComponent(UITransform)!.width;
+                const playerWidth = player.getComponent(UITransform)!.width;
                 const playerX = nextPos.x + playerWidth / 4;
                 this.model.setPlayerX(playerX);
                 this.view!.updatePlayer(playerX);
             } else {
-                AnimationHelper.animatePlayerFall(this.view!['playerNode']!, () => {
+                AnimationHelper.animatePlayerFall(player, () => {
                     this.isPlaying = false;
                     this.view!.showGameOverScreen();
                 });
@@ -137,21 +126,19 @@ export class GameManager extends Component {
     }
 
     update(deltaTime: number) {
-        if (!this.isPlaying) return;
+        if (!this.isPlaying || !this.model.isStickGrowing() || !this.view!.stickNode) return;
 
-        if (this.model.isStickGrowing() && this.view!.stickNode) {
-            const stickTransform = this.view!.stickNode.getComponent(UITransform);
-            const maxScaleY = this.maxHeight / stickTransform.height;
-            const growthSpeed = (this.view as GameView).getGrowthSpeed();
+        const stickTransform = this.view!.stickNode.getComponent(UITransform)!;
+        const maxScaleY = this.maxHeight / stickTransform.height;
+        const growthSpeed = (this.view as GameView).getGrowthSpeed();
 
-            this.currentScaleY += this.growthSpeed * deltaTime;
-            if (this.currentScaleY >= maxScaleY) {
-                this.currentScaleY = maxScaleY;
-                this.model.setStickGrowing(false);
-                this.view!.dropStick((stick) => this.checkResult(stick));
-            }
-
-            this.view!.updateStick(this.currentScaleY, this.model.getStickAngle());
+        this.currentScaleY += this.growthSpeed * deltaTime;
+        if (this.currentScaleY >= maxScaleY) {
+            this.currentScaleY = maxScaleY;
+            this.model.setStickGrowing(false);
+            this.view!.dropStick((stick) => this.checkResult(stick));
         }
+
+        this.view!.updateStick(this.currentScaleY, this.model.getStickAngle());
     }
 }

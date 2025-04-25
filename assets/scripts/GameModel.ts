@@ -4,8 +4,8 @@ export class GameModel implements IGameModel {
     private playerX: number = 0;
     private stickGrowing: boolean = false;
     private stickAngle: number = 0;
-    private startColumn = { x: 0, width: 50 };
-    private nextColumn = { x: 150, width: 50 };
+    private startColumnX: number = 0;
+    private nextColumnX: number = 0;
 
     getPlayerX(): number {
         return this.playerX;
@@ -31,23 +31,27 @@ export class GameModel implements IGameModel {
         this.stickAngle = angle;
     }
 
-    getStartColumn(): { x: number; width: number } {
-        return this.startColumn;
+    getStartColumnX(): number {
+        return this.startColumnX;
     }
 
-    getNextColumn(): { x: number; width: number } {
-        return this.nextColumn;
+    setStartColumnX(x: number): void {
+        this.startColumnX = x;
+    }
+
+    getNextColumnX(): number {
+        return this.nextColumnX;
     }
 
     setNextColumnX(x: number): void {
-        this.nextColumn.x = x;
+        this.nextColumnX = x;
     }
 
     reset(): void {
         this.playerX = 0;
         this.stickGrowing = false;
         this.stickAngle = 0;
-        this.startColumn = { x: 0, width: 50 };
-        this.nextColumn = { x: 150, width: 50 };
+        this.startColumnX = 0;
+        this.nextColumnX = 0;
     }
 }

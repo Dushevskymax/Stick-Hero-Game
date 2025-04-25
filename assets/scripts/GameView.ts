@@ -3,29 +3,14 @@ const { ccclass, property } = _decorator;
 
 @ccclass('GameView')
 export class GameView extends Component {
-    @property(Node)
-    startScreen: Node;
-
-    @property(Node)
-    playScreen: Node;
-
-    @property(Node)
-    gameOverScreen: Node;
-
-    @property(Prefab)
-    playerPrefab: Prefab;
-
-    @property(Prefab)
-    stickPrefab: Prefab;
-    
-    @property(Prefab)
-    columnPrefab: Prefab;
-
-    @property
-    private growthSpeed = 0;
-
-    @property
-    private maxHeight = 1000;
+    @property(Node) startScreen: Node = null;
+    @property(Node) playScreen: Node = null;
+    @property(Node) gameOverScreen: Node = null;
+    @property(Prefab) playerPrefab: Prefab = null;
+    @property(Prefab) stickPrefab: Prefab = null;
+    @property(Prefab) columnPrefab: Prefab = null;
+    @property({ type: Number }) growthSpeed: number = 0;
+    @property({ type: Number }) maxHeight: number = 1000;
 
     private playerNode: Node | null = null;
     public stickNode: Node | null = null;
@@ -37,13 +22,23 @@ export class GameView extends Component {
     private columnHeight: number = 0;
     public randomPosition: number = 0;
 
-    public getGrowthSpeed(): number {
-        return this.growthSpeed;
-    }
-
     start() {
+        this.startScreen.setSiblingIndex(10);
+        this.playScreen.setSiblingIndex(11);
+        this.gameOverScreen.setSiblingIndex(12);
+
         this.setupScene();
         this.showStartScreen();
+    }
+
+    public resetScene() {
+        [this.startColumnNode, this.nextColumnNode, this.playerNode, this.stickNode].forEach(node => {
+            if (node) {
+                node.destroy();
+            }
+        });
+        this.startColumnNode = this.nextColumnNode = this.playerNode = this.stickNode = null;
+        this.setupScene();
     }
 
     private setupScene() {
@@ -56,15 +51,13 @@ export class GameView extends Component {
         this.startColumnNode.setParent(canvas);
         this.columnHeight = this.startColumnNode.getComponent(UITransform)!.height;
         this.startColumnNode.setPosition(0, this.canvasBottomY + this.columnHeight / 2, 0);
-        console.log(`Стартовый столб: x:${this.startColumnNode.position.x} y:${this.startColumnNode.position.y}`);
-        this.startColumnNode.setSiblingIndex(-11);
+        this.startColumnNode.setSiblingIndex(2); 
 
         this.playerNode = instantiate(this.playerPrefab);
         this.playerNode.setParent(canvas);
         const playerHeight = this.playerNode.getComponent(UITransform)!.height;
         this.playerNode.setPosition(0, this.canvasBottomY + this.columnHeight + playerHeight / 2, 0);
-        console.log(`Игрок: x:${this.playerNode.position.x} y:${this.playerNode.position.y}`);
-        this.playerNode.setSiblingIndex(-12);
+        this.playerNode.setSiblingIndex(4);
     }
 
     public setupNextColumn() {
@@ -72,150 +65,132 @@ export class GameView extends Component {
         const canvasHeight = canvas.getComponent(UITransform)!.height;
         const canvasWidth = canvas.getComponent(UITransform)!.width;
         this.canvasBottomY = -canvasHeight / 2;
+
+        if (this.nextColumnNode) {
+            this.nextColumnNode.destroy();
+            this.nextColumnNode = null;
+        }
+
         this.nextColumnNode = instantiate(this.columnPrefab);
         this.nextColumnNode.setParent(canvas);
-        const columnHeight = this.startColumnNode.getComponent(UITransform)!.height;
-        const columnWidth = this.startColumnNode.getComponent(UITransform)!.width;
+        const columnHeight = this.startColumnNode!.getComponent(UITransform)!.height;
+        const columnWidth = this.startColumnNode!.getComponent(UITransform)!.width;
         const minWidth = columnWidth / 3;
         const maxWidth = columnWidth * 2;
         const randomWidth = Math.random() * (maxWidth - minWidth) + minWidth;
-        this.nextColumnNode.getComponent(UITransform).width = randomWidth;
+        this.nextColumnNode.getComponent(UITransform)!.width = randomWidth;
         const minPosition = canvasWidth / 2 + 1.5 * columnWidth;
         const maxPosition = 1.5 * canvasWidth - randomWidth / 2;
         this.randomPosition = Math.random() * (maxPosition - minPosition) + minPosition;
 
-        console.log(`Рандомная ширина: ${randomWidth}`);
-        console.log(`Минимальная позиция: ${minPosition}`);
-        console.log(`Максимальная позиция: ${maxPosition}`);
-
         this.nextColumnNode.setPosition(this.randomPosition, this.canvasBottomY + columnHeight / 2, 0);
-        this.nextColumnNode.setSiblingIndex(-13);
-        console.log(`Следующая колонна: x:${this.randomPosition} y:${this.nextColumnNode.position.y}`);
+        this.nextColumnNode.setSiblingIndex(2); 
     }
 
     animateInitialSetup(startColumnX: number, playerX: number, nextColumnX: number) {
-        tween(this.startColumnNode!)
-            .to(0.3, { position: new Vec3(startColumnX, this.startColumnNode!.position.y, 0) })
-            .start();
-        tween(this.playerNode!)
-            .to(0.3, { position: new Vec3(playerX, this.playerNode!.position.y, 0) })
-            .start();
-        tween(this.nextColumnNode!)
-            .to(0.3, { position: new Vec3(nextColumnX, this.nextColumnNode!.position.y, 0) })
-            .start();
-        console.log(`Куда сдвинулся начальный столб: ${startColumnX}`);
-        console.log(`Куда сдвинулся игрок: ${playerX}`);
-        console.log(`Куда сдвинулся следующий столб: ${nextColumnX}`);
+        tween(this.startColumnNode!).to(0.3, { position: new Vec3(startColumnX, this.startColumnNode!.position.y, 0) }).start();
+        tween(this.playerNode!).to(0.3, { position: new Vec3(playerX, this.playerNode!.position.y, 0) }).start();
+        tween(this.nextColumnNode!).to(0.3, { position: new Vec3(nextColumnX, this.nextColumnNode!.position.y, 0) }).start();
     }
 
     animateNewColumn(targetX: number) {
-        console.log(`Выполняю анимэйт`);
         if (this.nextColumnNode) {
-            tween(this.nextColumnNode)
-                .to(0.3, { position: new Vec3(targetX, this.nextColumnNode.position.y, 0) })
-                .start();
+            tween(this.nextColumnNode).to(0.3, { position: new Vec3(targetX, this.nextColumnNode.position.y, 0) }).start();
         }
-        setTimeout(() => {
-            console.log(`Куда сдвинулся: ${targetX}`);
-        }, 400);
     }
 
-    updatePlayer(x: number): void {
+    updatePlayer(x: number) {
         if (this.playerNode) {
-            tween(this.playerNode)
-                .to(0.8, { position: new Vec3(x, this.playerNode.position.y, 0) })
-                .start();
+            tween(this.playerNode).to(0.8, { position: new Vec3(x, this.playerNode.position.y, 0) }).start();
         }
     }
 
-    createStick(startX: number, startY: number): void {
-        if (!this.stickNode) {
-            this.stickNode = instantiate(this.stickPrefab);
-            const canvas = director.getScene().getChildByName("Canvas");
-            this.stickNode.setParent(canvas);
-            this.stickNode.setPosition(startX, startY, 0);
-            console.log(`Позиция точки старта палки: x:${startX} y:${startY}`);
-            this.stickNode.getComponent(UITransform)!.anchorY = 0;
-            this.stickNode.setScale(new Vec3(1, 0, 1));
-           
-        }
+    createStick(startX: number, startY: number) {
+        if (this.stickNode) return;
+        this.stickNode = instantiate(this.stickPrefab);
+        const canvas = director.getScene().getChildByName("Canvas");
+        this.stickNode.setParent(canvas);
+        this.stickNode.setPosition(startX, startY, 0);
+        this.stickNode.getComponent(UITransform)!.anchorY = 0;
+        this.stickNode.setScale(new Vec3(1, 0, 1));
+        this.stickNode.setSiblingIndex(3); 
     }
 
-    updateStick(scaleY: number, angle: number): void {
+    updateStick(scaleY: number, angle: number) {
         if (this.stickNode) {
             this.stickNode.setScale(new Vec3(1, scaleY, 1));
             this.stickNode.angle = angle;
         }
     }
 
-    dropStick(callback: (stick: Node) => void): void {
+    dropStick(callback: (stick: Node) => void) {
         if (!this.stickNode) return;
-        console.log("Палка упала епта");
         const stick = this.stickNode;
         tween(stick)
             .to(0.25, { angle: -90 })
             .call(() => {
-                this.stickNode = null; 
+                this.stickNode = null;
                 callback(stick);
             })
             .start();
     }
 
-    updateColumns(startX: number, startWidth: number, nextX: number, nextWidth: number): void {
+    updateColumns(startX: number, nextX: number) {
         if (this.startColumnNode) {
             this.startColumnNode.setPosition(startX, this.startColumnNode.position.y, 0);
-            this.startColumnNode.getComponent(UITransform)!.width = startWidth;
         }
         if (this.nextColumnNode) {
             this.nextColumnNode.setPosition(nextX, this.nextColumnNode.position.y, 0);
-            this.nextColumnNode.getComponent(UITransform)!.width = nextWidth;
         }
     }
 
     public onStartButtonPressed() {
         this.showPlayScreen();
         this.setupNextColumn();
-        const canvas = director.getScene().getChildByName("Canvas");
-        const canvasWidth = canvas.getComponent(UITransform)!.width;
-        const startColumnWidth = this['startColumnNode'].getComponent(UITransform)!.width;
-        const playerWidth = this['playerNode'].getComponent(UITransform)!.width;
+        const canvasWidth = this.getCanvasWidth();
+        const startColumnWidth = this.getStartColumnNode()!.getComponent(UITransform)!.width;
+        const playerWidth = this.getPlayerNode()!.getComponent(UITransform)!.width;
         const startColumnX = -canvasWidth / 2 + startColumnWidth;
         const playerX = startColumnX + playerWidth / 4;
         const nextColumnX = this.randomPosition - canvasWidth;
         this.animateInitialSetup(startColumnX, playerX, nextColumnX);
     }
 
-    showStartScreen(): void {
+    showStartScreen() {
         this.startScreen.active = true;
         this.playScreen.active = false;
         this.gameOverScreen.active = false;
-        console.log('Активен стартовый экран');
     }
 
-    hideStartScreen(): void {
-        this.startScreen.active = false;
-    }
-
-    showPlayScreen(): void {
+    showPlayScreen() {
         this.playScreen.active = true;
         this.startScreen.active = false;
         this.gameOverScreen.active = false;
-        console.log('Активен игровой экран');
     }
 
-    hidePlayScreen(): void {
-        this.playScreen.active = false;
-    }
-
-    showGameOverScreen(): void {
+    showGameOverScreen() {
         this.gameOverScreen.active = true;
         this.startScreen.active = false;
         this.playScreen.active = false;
-        console.log('Активен конечный экран');
     }
 
-    hideGameOverScreen(): void {
-        this.gameOverScreen.active = false;
+    public getGrowthSpeed(): number {
+        return this.growthSpeed;
     }
 
+    public getStartColumnNode(): Node | null {
+        return this.startColumnNode;
+    }
+
+    public getNextColumnNode(): Node | null {
+        return this.nextColumnNode;
+    }
+
+    public getPlayerNode(): Node | null {
+        return this.playerNode;
+    }
+
+    public getCanvasWidth(): number {
+        return this.canvasWidth;
+    }
 }
