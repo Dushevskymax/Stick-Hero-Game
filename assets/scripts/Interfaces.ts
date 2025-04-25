@@ -22,7 +22,7 @@ export interface IGameView {
     updateColumns(startX: number, nextX: number): void;
     showStartScreen(): void;
     showPlayScreen(): void;
-    dropStick(callback: (stick: Node) => void): void;
+    dropStick(instant: boolean, callback: (stick: Node) => void): void;
     randomPosition: number;
     animateInitialSetup(startColumnX: number, playerX: number, nextColumnX: number): void;
     setupNextColumn(): void;
@@ -34,4 +34,5 @@ export interface IGameView {
     getPlayerNode(): Node | null;
     getCanvasWidth(): number;
     resetScene(): void;
+    animatePlayerToStickEnd(stickEndX: number, callback: () => void): void;
 }

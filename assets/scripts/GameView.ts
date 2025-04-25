@@ -123,15 +123,37 @@ export class GameView extends Component {
         }
     }
 
-    dropStick(callback: (stick: Node) => void) {
-        if (!this.stickNode) return;
-        const stick = this.stickNode;
+    private dropStickInstant(stick: Node, callback: (stick: Node) => void) {
+        stick.angle = -90;
+        this.stickNode = null;
+        callback(stick);
+    }
+
+    private dropStickAnimated(stick: Node, callback: (stick: Node) => void) {
         tween(stick)
             .to(0.25, { angle: -90 })
             .call(() => {
                 this.stickNode = null;
                 callback(stick);
             })
+            .start();
+    }
+
+    dropStick(instant: boolean, callback: (stick: Node) => void) {
+        if (!this.stickNode) return;
+        const stick = this.stickNode;
+        if (instant) {
+            this.dropStickInstant(stick, callback);
+        } else {
+            this.dropStickAnimated(stick, callback);
+        }
+    }
+
+    animatePlayerToStickEnd(stickEndX: number, callback: () => void) {
+        if (!this.playerNode) return;
+        tween(this.playerNode)
+            .to(0.4, { position: new Vec3(stickEndX, this.playerNode.position.y, 0) })
+            .call(callback)
             .start();
     }
 

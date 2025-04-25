@@ -84,7 +84,7 @@ export class GameManager extends Component {
     private onTouchEnd() {
         if (!this.isPlaying || !this.model.isStickGrowing()) return;
         this.model.setStickGrowing(false);
-        this.view!.dropStick((stick) => this.checkResult(stick));
+        this.view!.dropStick(false, (stick) => this.checkResult(stick));
     }
 
     private checkResult(stick: Node) {
@@ -113,9 +113,11 @@ export class GameManager extends Component {
                 this.model.setPlayerX(playerX);
                 this.view!.updatePlayer(playerX);
             } else {
-                AnimationHelper.animatePlayerFall(player, () => {
-                    this.isPlaying = false;
-                    this.view!.showGameOverScreen();
+                (this.view as GameView).animatePlayerToStickEnd(stickEndX, () => {
+                    AnimationHelper.animatePlayerFall(player, () => {
+                        this.isPlaying = false;
+                        this.view!.showGameOverScreen();
+                    });
                 });
             }
         } catch (error) {
@@ -136,7 +138,7 @@ export class GameManager extends Component {
         if (this.currentScaleY >= maxScaleY) {
             this.currentScaleY = maxScaleY;
             this.model.setStickGrowing(false);
-            this.view!.dropStick((stick) => this.checkResult(stick));
+            this.view!.dropStick(false, (stick) => this.checkResult(stick));
         }
 
         this.view!.updateStick(this.currentScaleY, this.model.getStickAngle());
