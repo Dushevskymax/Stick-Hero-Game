@@ -776,8 +776,7 @@
       "__uuid__": "c910665d-8c8d-4536-bd95-a1ed60ecd442",
       "__expectedType__": "cc.Prefab"
     },
-    "growthSpeed": 10,
-    "maxHeight": 1000,
+    "growthSpeed": 3,
     "scoreLabel": {
       "__id__": 37
     },
@@ -1650,7 +1649,6 @@
       "__expectedType__": "cc.Prefab"
     },
     "growthSpeed": 0,
-    "maxHeight": 1000,
     "scoreLabel": null,
     "currentScoreLabel": null,
     "_id": "c88BS3x61HOJQ/tjqUhQSe"

@@ -1,6 +1,4 @@
-import { IGameModel } from './Interfaces';
-
-export class GameModel implements IGameModel {
+export class GameModel {
     private playerX: number = 0;
     private stickGrowing: boolean = false;
     private stickAngle: number = 0;
@@ -54,7 +52,6 @@ export class GameModel implements IGameModel {
 
     incrementScore(): void {
         this.score += 1;
-        console.log(`GameModel: Score incremented to ${this.score}`); 
     }
 
     reset(): void {
@@ -64,6 +61,5 @@ export class GameModel implements IGameModel {
         this.startColumnX = 0;
         this.nextColumnX = 0;
         this.score = 0;
-        console.log("GameModel: Score reset to 0"); 
     }
 }
