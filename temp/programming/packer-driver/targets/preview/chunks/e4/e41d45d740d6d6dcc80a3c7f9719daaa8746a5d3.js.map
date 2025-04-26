@@ -1,0 +1,1 @@
+{"version":3,"sources":["file:///C:/Users/user/StickHero/assets/scripts/Player/PlayerState.ts"],"names":["PlayerState"],"mappings":";;;;;;;;;;;;;;6BAAYA,W,0BAAAA,W;AAAAA,QAAAA,W;AAAAA,QAAAA,W;AAAAA,QAAAA,W;eAAAA,W","sourcesContent":["export enum PlayerState {\n    WAITING = 'waiting',\n    MOVING = 'moving',\n    FALLING = 'falling',\n}"]}

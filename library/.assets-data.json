@@ -1,0 +1,626 @@
+{
+  "aaa38d60-aa49-46af-8fb4-3cb983295f7c": {
+    "url": "db://assets/scripts",
+    "value": {},
+    "versionCode": 1
+  },
+  "123209cd-c524-4e2b-8832-c844138de967": {
+    "url": "db://assets/sprites",
+    "value": {},
+    "versionCode": 1
+  },
+  "d9ee75f7-ae7d-418f-b88a-bdec2d80040a": {
+    "url": "db://assets/prefabs",
+    "value": {},
+    "versionCode": 1
+  },
+  "2e25ba28-a46f-4c2a-9d88-16da957dfd96": {
+    "url": "db://assets/sprites/player",
+    "value": {},
+    "versionCode": 1
+  },
+  "85ea778e-56d7-46ab-9875-a57779168a0d": {
+    "url": "db://assets/sprites/stick",
+    "value": {},
+    "versionCode": 1
+  },
+  "fab20fc1-8d40-4f5f-8fcf-d76702ee6614": {
+    "url": "db://assets/sprites/backgrounds",
+    "value": {},
+    "versionCode": 1
+  },
+  "1ec2fe9f-1b8f-4d8c-8b12-5e6a24f267ba": {
+    "url": "db://assets/sprites/buttons",
+    "value": {},
+    "versionCode": 1
+  },
+  "507fe507-bd29-4f65-970c-6ada0203d960": {
+    "url": "db://assets/sprites/player/red.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "507fe507-bd29-4f65-970c-6ada0203d960@6c48a": {
+    "url": "db://assets/sprites/player/red.png@6c48a",
+    "value": {
+      "depends": [
+        "507fe507-bd29-4f65-970c-6ada0203d960"
+      ]
+    },
+    "versionCode": 1
+  },
+  "507fe507-bd29-4f65-970c-6ada0203d960@f9941": {
+    "url": "db://assets/sprites/player/red.png@f9941",
+    "value": {
+      "depends": [
+        "507fe507-bd29-4f65-970c-6ada0203d960@6c48a"
+      ]
+    },
+    "versionCode": 1
+  },
+  "b65feef7-274f-4804-a60f-7909950a75b3": {
+    "url": "db://assets/sprites/player/player.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "b65feef7-274f-4804-a60f-7909950a75b3@6c48a": {
+    "url": "db://assets/sprites/player/player.png@6c48a",
+    "value": {
+      "depends": [
+        "b65feef7-274f-4804-a60f-7909950a75b3"
+      ]
+    },
+    "versionCode": 1
+  },
+  "b65feef7-274f-4804-a60f-7909950a75b3@f9941": {
+    "url": "db://assets/sprites/player/player.png@f9941",
+    "value": {
+      "depends": [
+        "b65feef7-274f-4804-a60f-7909950a75b3@6c48a"
+      ]
+    },
+    "versionCode": 1
+  },
+  "0581a18b-0fee-4e4a-82f4-5ed6cb8cb00f": {
+    "url": "db://assets/sprites/buttons/button_play.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "0581a18b-0fee-4e4a-82f4-5ed6cb8cb00f@6c48a": {
+    "url": "db://assets/sprites/buttons/button_play.png@6c48a",
+    "value": {
+      "depends": [
+        "0581a18b-0fee-4e4a-82f4-5ed6cb8cb00f"
+      ]
+    },
+    "versionCode": 1
+  },
+  "0581a18b-0fee-4e4a-82f4-5ed6cb8cb00f@f9941": {
+    "url": "db://assets/sprites/buttons/button_play.png@f9941",
+    "value": {
+      "depends": [
+        "0581a18b-0fee-4e4a-82f4-5ed6cb8cb00f@6c48a"
+      ]
+    },
+    "versionCode": 1
+  },
+  "b67dd928-f34d-4f74-bc9a-fe3e43f17a60": {
+    "url": "db://assets/sprites/buttons/button_restart.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "b67dd928-f34d-4f74-bc9a-fe3e43f17a60@6c48a": {
+    "url": "db://assets/sprites/buttons/button_restart.png@6c48a",
+    "value": {
+      "depends": [
+        "b67dd928-f34d-4f74-bc9a-fe3e43f17a60"
+      ]
+    },
+    "versionCode": 1
+  },
+  "b67dd928-f34d-4f74-bc9a-fe3e43f17a60@f9941": {
+    "url": "db://assets/sprites/buttons/button_restart.png@f9941",
+    "value": {
+      "depends": [
+        "b67dd928-f34d-4f74-bc9a-fe3e43f17a60@6c48a"
+      ]
+    },
+    "versionCode": 1
+  },
+  "bf508627-e1b7-45e6-9430-e6878dc54841": {
+    "url": "db://assets/sprites/backgrounds/background.jpg",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "bf508627-e1b7-45e6-9430-e6878dc54841@6c48a": {
+    "url": "db://assets/sprites/backgrounds/background.jpg@6c48a",
+    "value": {
+      "depends": [
+        "bf508627-e1b7-45e6-9430-e6878dc54841"
+      ]
+    },
+    "versionCode": 1
+  },
+  "bf508627-e1b7-45e6-9430-e6878dc54841@f9941": {
+    "url": "db://assets/sprites/backgrounds/background.jpg@f9941",
+    "value": {
+      "depends": [
+        "bf508627-e1b7-45e6-9430-e6878dc54841@6c48a"
+      ]
+    },
+    "versionCode": 1
+  },
+  "8645cde1-0ae3-4ea5-9004-2c50821abe59": {
+    "url": "db://assets/sprites/backgrounds/background_black.jpg",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "8645cde1-0ae3-4ea5-9004-2c50821abe59@6c48a": {
+    "url": "db://assets/sprites/backgrounds/background_black.jpg@6c48a",
+    "value": {
+      "depends": [
+        "8645cde1-0ae3-4ea5-9004-2c50821abe59"
+      ]
+    },
+    "versionCode": 1
+  },
+  "8645cde1-0ae3-4ea5-9004-2c50821abe59@f9941": {
+    "url": "db://assets/sprites/backgrounds/background_black.jpg@f9941",
+    "value": {
+      "depends": [
+        "8645cde1-0ae3-4ea5-9004-2c50821abe59@6c48a"
+      ]
+    },
+    "versionCode": 1
+  },
+  "81cc8028-c8f1-4a35-8458-d2fbbc49483b": {
+    "url": "db://assets/sprites/column",
+    "value": {},
+    "versionCode": 1
+  },
+  "80a40786-ac10-4a80-9c3e-821bf322ae0b": {
+    "url": "db://assets/sprites/column/column.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "80a40786-ac10-4a80-9c3e-821bf322ae0b@6c48a": {
+    "url": "db://assets/sprites/column/column.png@6c48a",
+    "value": {
+      "depends": [
+        "80a40786-ac10-4a80-9c3e-821bf322ae0b"
+      ]
+    },
+    "versionCode": 1
+  },
+  "80a40786-ac10-4a80-9c3e-821bf322ae0b@f9941": {
+    "url": "db://assets/sprites/column/column.png@f9941",
+    "value": {
+      "depends": [
+        "80a40786-ac10-4a80-9c3e-821bf322ae0b@6c48a"
+      ]
+    },
+    "versionCode": 1
+  },
+  "50456374-23be-4b11-be73-98e0dc8189af": {
+    "url": "db://assets/sprites/stick/stick.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "50456374-23be-4b11-be73-98e0dc8189af@6c48a": {
+    "url": "db://assets/sprites/stick/stick.png@6c48a",
+    "value": {
+      "depends": [
+        "50456374-23be-4b11-be73-98e0dc8189af"
+      ]
+    },
+    "versionCode": 1
+  },
+  "50456374-23be-4b11-be73-98e0dc8189af@f9941": {
+    "url": "db://assets/sprites/stick/stick.png@f9941",
+    "value": {
+      "depends": [
+        "50456374-23be-4b11-be73-98e0dc8189af@6c48a"
+      ]
+    },
+    "versionCode": 1
+  },
+  "6376e577-297a-4b8a-bcbd-91bd96ac6f63": {
+    "url": "db://assets/scene.scene",
+    "value": {
+      "depends": [
+        "6376e577-297a-4b8a-bcbd-91bd96ac6f63",
+        "bf508627-e1b7-45e6-9430-e6878dc54841@f9941",
+        "8645cde1-0ae3-4ea5-9004-2c50821abe59@f9941",
+        "0581a18b-0fee-4e4a-82f4-5ed6cb8cb00f@f9941",
+        "4565b9d7-1bdd-48ca-8af1-f8fbd4c3bac6",
+        "dbc911fc-2f15-4a22-99a1-f4b67b0e1c38",
+        "c910665d-8c8d-4536-bd95-a1ed60ecd442",
+        "b67dd928-f34d-4f74-bc9a-fe3e43f17a60@f9941"
+      ],
+      "dependScripts": [
+        "c33d895c-b871-4bb3-9d8a-b54bb6c92613",
+        "61a25693-4a34-4a0b-b214-c91e23a1477a"
+      ]
+    },
+    "versionCode": 1
+  },
+  "61a25693-4a34-4a0b-b214-c91e23a1477a": {
+    "url": "db://assets/scripts/GameView.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "dbc911fc-2f15-4a22-99a1-f4b67b0e1c38": {
+    "url": "db://assets/prefabs/stick.prefab",
+    "value": {
+      "depends": [
+        "50456374-23be-4b11-be73-98e0dc8189af@f9941"
+      ],
+      "dependScripts": []
+    },
+    "versionCode": 1
+  },
+  "c910665d-8c8d-4536-bd95-a1ed60ecd442": {
+    "url": "db://assets/prefabs/column.prefab",
+    "value": {
+      "depends": [
+        "80a40786-ac10-4a80-9c3e-821bf322ae0b@f9941"
+      ],
+      "dependScripts": []
+    },
+    "versionCode": 1
+  },
+  "4565b9d7-1bdd-48ca-8af1-f8fbd4c3bac6": {
+    "url": "db://assets/prefabs/player.prefab",
+    "value": {
+      "depends": [
+        "b65feef7-274f-4804-a60f-7909950a75b3@f9941"
+      ],
+      "dependScripts": []
+    },
+    "versionCode": 1
+  },
+  "7fd9440c-6e2b-4588-acee-3b0a5aa52038": {
+    "url": "db://assets/scripts/AnimationHelper.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "c33d895c-b871-4bb3-9d8a-b54bb6c92613": {
+    "url": "db://assets/scripts/GameManager.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "16f8acad-7e97-49f3-8fe4-7fb20e62d5f9": {
+    "url": "db://assets/scripts/Interfaces.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "19b201ed-aa46-460a-b373-eb5335d473cc": {
+    "url": "db://assets/scripts/GameModel.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "91719a7f-040c-4ca3-b09d-c95022c63302": {
+    "url": "db://assets/scripts/SceneUtills.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "2f722135-a788-4f2e-8a61-92ae04db1b96": {
+    "url": "db://assets/scripts/StickController.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "2bce972e-e765-4679-9e3b-b5082589b36d": {
+    "url": "db://assets/scripts/ColumnManager.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "0794ea60-c706-4f0b-b275-5a4b70426b49": {
+    "url": "db://assets/scripts/PositionHelper.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "11d1b37d-75df-4682-8773-87f1191a3d23": {
+    "url": "db://assets/scripts/ScreenManager.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "735e6bbd-21db-4631-843f-e48b163034b8": {
+    "url": "db://assets/scripts/Logger.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "9a9970b6-2449-4ce4-a90a-3ddb18b7d993": {
+    "url": "db://assets/scripts/PositionCalculator.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "236ced8a-fc44-4b12-9fc1-9007995d435b": {
+    "url": "db://assets/scripts/PositionCalculator.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "8b634729-5188-4c24-8bd2-1a6c599b93bf": {
+    "url": "db://assets/animations",
+    "value": {},
+    "versionCode": 1
+  },
+  "d8db8c1e-f508-4726-a978-f22bfcf20525": {
+    "url": "db://assets/scripts/Game",
+    "value": {},
+    "versionCode": 1
+  },
+  "524eb1e2-3d9d-4956-afe4-8fa59d680bc3": {
+    "url": "db://assets/scripts/Player",
+    "value": {},
+    "versionCode": 1
+  },
+  "d2308798-9dd0-4a30-a7ae-54ebedfe8a8e": {
+    "url": "db://assets/scripts/UI",
+    "value": {},
+    "versionCode": 1
+  },
+  "49753cd2-8b62-405b-af0b-88248b33da2d": {
+    "url": "db://assets/sprites/scene",
+    "value": {},
+    "versionCode": 1
+  },
+  "34142149-2ba1-4de5-b750-4656ed16b91e": {
+    "url": "db://assets/sprites/star",
+    "value": {},
+    "versionCode": 1
+  },
+  "0ba94abe-0602-487b-86eb-dfe099f79bed": {
+    "url": "db://assets/scripts/Game/Entities.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "fdba5338-3dd2-42a8-b8de-77d62089a19c": {
+    "url": "db://assets/scripts/Game/GameLogic.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "feef5c89-1a4a-4e9f-a635-9ea70836eb7c": {
+    "url": "db://assets/scripts/Game/GameManager.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "692a4235-f1b2-42fb-b180-f75b65da3555": {
+    "url": "db://assets/scripts/Game/GameState.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "1734f27d-aab6-486d-ab8f-4238c786575d": {
+    "url": "db://assets/scripts/Player/PlayerController.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "6ff1d4c4-6619-4e1d-ae5b-b565970c6b2d": {
+    "url": "db://assets/scripts/Player/PlayerState.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "2c8e23a4-d804-49bc-8149-90588d239085": {
+    "url": "db://assets/scripts/Player/StickController.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "8e36df46-2b30-434a-9899-4a8891397242": {
+    "url": "db://assets/scripts/UI/SceneMaker.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "381bd389-727f-4ac5-b497-1beb2178514c": {
+    "url": "db://assets/scripts/UI/ScreenManager.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "d227a814-8bf5-44ad-ae04-2d36084750f2": {
+    "url": "db://assets/sprites/scene/buttons",
+    "value": {},
+    "versionCode": 1
+  },
+  "ef44dd41-0084-48d4-bfb0-e120b651c3ae": {
+    "url": "db://assets/animations/walking.anim",
+    "value": {},
+    "versionCode": 1
+  },
+  "30afa886-7c7c-4a8c-9bfe-e9c3bb815dd9": {
+    "url": "db://assets/sprites/scene/background.jpg",
+    "value": {},
+    "versionCode": 1
+  },
+  "3c070282-bdf6-4e10-88d4-7e7a740409d8": {
+    "url": "db://assets/sprites/scene/background_black.jpg",
+    "value": {},
+    "versionCode": 1
+  },
+  "c9f2369c-8c7c-4686-ae0c-68b7482b27e1": {
+    "url": "db://assets/sprites/scene/column.png",
+    "value": {},
+    "versionCode": 1
+  },
+  "89893795-4a90-4330-b15a-691bb1a23a3e": {
+    "url": "db://assets/sprites/scene/stick.png",
+    "value": {},
+    "versionCode": 1
+  },
+  "3d27d33d-9d28-45d1-9419-3b39e4558b0c": {
+    "url": "db://assets/sprites/star/star.png",
+    "value": {},
+    "versionCode": 1
+  },
+  "89893795-4a90-4330-b15a-691bb1a23a3e@6c48a": {
+    "url": "db://assets/sprites/scene/stick.png@6c48a",
+    "value": {
+      "depends": [
+        "89893795-4a90-4330-b15a-691bb1a23a3e"
+      ]
+    },
+    "versionCode": 1
+  },
+  "c9f2369c-8c7c-4686-ae0c-68b7482b27e1@6c48a": {
+    "url": "db://assets/sprites/scene/column.png@6c48a",
+    "value": {
+      "depends": [
+        "c9f2369c-8c7c-4686-ae0c-68b7482b27e1"
+      ]
+    },
+    "versionCode": 1
+  },
+  "89893795-4a90-4330-b15a-691bb1a23a3e@f9941": {
+    "url": "db://assets/sprites/scene/stick.png@f9941",
+    "value": {
+      "depends": [
+        "89893795-4a90-4330-b15a-691bb1a23a3e@6c48a"
+      ]
+    },
+    "versionCode": 1
+  },
+  "c487b505-19bb-4347-990d-cb5e9eb5b211": {
+    "url": "db://assets/sprites/scene/buttons/button_home.png",
+    "value": {},
+    "versionCode": 1
+  },
+  "3d27d33d-9d28-45d1-9419-3b39e4558b0c@6c48a": {
+    "url": "db://assets/sprites/star/star.png@6c48a",
+    "value": {
+      "depends": [
+        "3d27d33d-9d28-45d1-9419-3b39e4558b0c"
+      ]
+    },
+    "versionCode": 1
+  },
+  "c9f2369c-8c7c-4686-ae0c-68b7482b27e1@f9941": {
+    "url": "db://assets/sprites/scene/column.png@f9941",
+    "value": {
+      "depends": [
+        "c9f2369c-8c7c-4686-ae0c-68b7482b27e1@6c48a"
+      ]
+    },
+    "versionCode": 1
+  },
+  "fe6d8da4-7945-4f61-91f0-2222c72f4e55": {
+    "url": "db://assets/sprites/scene/buttons/button_play.png",
+    "value": {},
+    "versionCode": 1
+  },
+  "c487b505-19bb-4347-990d-cb5e9eb5b211@6c48a": {
+    "url": "db://assets/sprites/scene/buttons/button_home.png@6c48a",
+    "value": {
+      "depends": [
+        "c487b505-19bb-4347-990d-cb5e9eb5b211"
+      ]
+    },
+    "versionCode": 1
+  },
+  "fe6d8da4-7945-4f61-91f0-2222c72f4e55@6c48a": {
+    "url": "db://assets/sprites/scene/buttons/button_play.png@6c48a",
+    "value": {
+      "depends": [
+        "fe6d8da4-7945-4f61-91f0-2222c72f4e55"
+      ]
+    },
+    "versionCode": 1
+  },
+  "30afa886-7c7c-4a8c-9bfe-e9c3bb815dd9@6c48a": {
+    "url": "db://assets/sprites/scene/background.jpg@6c48a",
+    "value": {
+      "depends": [
+        "30afa886-7c7c-4a8c-9bfe-e9c3bb815dd9"
+      ]
+    },
+    "versionCode": 1
+  },
+  "3c070282-bdf6-4e10-88d4-7e7a740409d8@6c48a": {
+    "url": "db://assets/sprites/scene/background_black.jpg@6c48a",
+    "value": {
+      "depends": [
+        "3c070282-bdf6-4e10-88d4-7e7a740409d8"
+      ]
+    },
+    "versionCode": 1
+  },
+  "3d27d33d-9d28-45d1-9419-3b39e4558b0c@f9941": {
+    "url": "db://assets/sprites/star/star.png@f9941",
+    "value": {
+      "depends": [
+        "3d27d33d-9d28-45d1-9419-3b39e4558b0c@6c48a"
+      ]
+    },
+    "versionCode": 1
+  },
+  "6ed59ee5-a788-434b-9b59-37158b456523": {
+    "url": "db://assets/sprites/scene/buttons/button_restart.png",
+    "value": {},
+    "versionCode": 1
+  },
+  "c487b505-19bb-4347-990d-cb5e9eb5b211@f9941": {
+    "url": "db://assets/sprites/scene/buttons/button_home.png@f9941",
+    "value": {
+      "depends": [
+        "c487b505-19bb-4347-990d-cb5e9eb5b211@6c48a"
+      ]
+    },
+    "versionCode": 1
+  },
+  "fe6d8da4-7945-4f61-91f0-2222c72f4e55@f9941": {
+    "url": "db://assets/sprites/scene/buttons/button_play.png@f9941",
+    "value": {
+      "depends": [
+        "fe6d8da4-7945-4f61-91f0-2222c72f4e55@6c48a"
+      ]
+    },
+    "versionCode": 1
+  },
+  "30afa886-7c7c-4a8c-9bfe-e9c3bb815dd9@f9941": {
+    "url": "db://assets/sprites/scene/background.jpg@f9941",
+    "value": {
+      "depends": [
+        "30afa886-7c7c-4a8c-9bfe-e9c3bb815dd9@6c48a"
+      ]
+    },
+    "versionCode": 1
+  },
+  "3c070282-bdf6-4e10-88d4-7e7a740409d8@f9941": {
+    "url": "db://assets/sprites/scene/background_black.jpg@f9941",
+    "value": {
+      "depends": [
+        "3c070282-bdf6-4e10-88d4-7e7a740409d8@6c48a"
+      ]
+    },
+    "versionCode": 1
+  },
+  "6ed59ee5-a788-434b-9b59-37158b456523@6c48a": {
+    "url": "db://assets/sprites/scene/buttons/button_restart.png@6c48a",
+    "value": {
+      "depends": [
+        "6ed59ee5-a788-434b-9b59-37158b456523"
+      ]
+    },
+    "versionCode": 1
+  },
+  "6ed59ee5-a788-434b-9b59-37158b456523@f9941": {
+    "url": "db://assets/sprites/scene/buttons/button_restart.png@f9941",
+    "value": {
+      "depends": [
+        "6ed59ee5-a788-434b-9b59-37158b456523@6c48a"
+      ]
+    },
+    "versionCode": 1
+  }
+}

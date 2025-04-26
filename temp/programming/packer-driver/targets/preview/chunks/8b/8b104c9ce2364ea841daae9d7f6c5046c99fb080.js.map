@@ -1,0 +1,1 @@
+{"version":3,"sources":["file:///C:/Users/user/StickHero/assets/scripts/Game/GameState.ts"],"names":["GameState"],"mappings":";;;;;;;;;;;;;;2BAAYA,S,0BAAAA,S;AAAAA,QAAAA,S;AAAAA,QAAAA,S;AAAAA,QAAAA,S;eAAAA,S","sourcesContent":["export enum GameState {\n    STARTSCREEN = 'startscreen',\n    PLAYSCREEN = 'playscreen',\n    GAMEOVERSCREEN = 'gameoverscreen'\n}\n\n"]}
