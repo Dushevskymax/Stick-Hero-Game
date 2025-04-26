@@ -20,12 +20,14 @@ export interface IGameView {
     createStick(startX: number, startY: number): void;
     updateStick(scaleY: number, angle: number): void;
     updateColumns(startX: number, nextX: number): void;
+    updateColumnReferences(newStartColumn: Node, newNextColumn: Node | null): void;
+    animateSceneShift(oldStartX: number, newStartX: number, playerX: number, nextX: number, callback?: () => void): void;
     showStartScreen(): void;
     showPlayScreen(): void;
     dropStick(instant: boolean, callback: (stick: Node) => void): void;
     randomPosition: number;
     animateInitialSetup(startColumnX: number, playerX: number, nextColumnX: number): void;
-    setupNextColumn(): void;
+    setupNextColumn(instant?: boolean): void;
     showGameOverScreen(): void;
     animateNewColumn(targetX: number): void;
     getGrowthSpeed(): number;

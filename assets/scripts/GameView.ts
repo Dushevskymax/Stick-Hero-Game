@@ -20,6 +20,7 @@ export class GameView extends Component {
     private canvasWidth: number = 0;
     private canvasBottomY: number = 0;
     private columnHeight: number = 0;
+    private prefabColumnWidth: number = 0;
     public randomPosition: number = 0;
 
     start() {
@@ -27,12 +28,15 @@ export class GameView extends Component {
         this.playScreen.setSiblingIndex(11);
         this.gameOverScreen.setSiblingIndex(12);
 
+        const tempColumn = instantiate(this.columnPrefab);
+        this.prefabColumnWidth = tempColumn.getComponent(UITransform)!.width;
+        tempColumn.destroy();
+
         this.setupScene();
         this.showStartScreen();
     }
 
     public resetScene() {
-        // Уничтожаем только известные динамические узлы
         [this.startColumnNode, this.nextColumnNode, this.playerNode, this.stickNode].forEach(node => {
             if (node) {
                 node.destroy();
@@ -62,7 +66,7 @@ export class GameView extends Component {
         this.playerNode.setSiblingIndex(4);
     }
 
-    public setupNextColumn() {
+    public setupNextColumn(instant: boolean = false) {
         const canvas = director.getScene().getChildByName("Canvas");
         const canvasHeight = canvas.getComponent(UITransform)!.height;
         const canvasWidth = canvas.getComponent(UITransform)!.width;
@@ -76,16 +80,20 @@ export class GameView extends Component {
         this.nextColumnNode = instantiate(this.columnPrefab);
         this.nextColumnNode.setParent(canvas);
         const columnHeight = this.startColumnNode!.getComponent(UITransform)!.height;
-        const columnWidth = this.startColumnNode!.getComponent(UITransform)!.width;
-        const minWidth = columnWidth / 3;
-        const maxWidth = columnWidth * 2;
+        const minWidth = this.prefabColumnWidth / 3;
+        const maxWidth = this.prefabColumnWidth * 2;
         const randomWidth = Math.random() * (maxWidth - minWidth) + minWidth;
         this.nextColumnNode.getComponent(UITransform)!.width = randomWidth;
-        const minPosition = canvasWidth / 2 + 1.5 * columnWidth;
+
+        const startColumnX = this.startColumnNode!.position.x;
+        const startColumnWidth = this.startColumnNode!.getComponent(UITransform)!.width;
+        const minGap = this.prefabColumnWidth * 2;
+        const minPosition = startColumnX + startColumnWidth / 2 + randomWidth / 2 + minGap;
         const maxPosition = 1.5 * canvasWidth - randomWidth / 2;
         this.randomPosition = Math.random() * (maxPosition - minPosition) + minPosition;
 
-        this.nextColumnNode.setPosition(canvasWidth / 2 + columnWidth, this.canvasBottomY + columnHeight / 2, 0);
+        const startX = instant ? this.randomPosition - canvasWidth : this.randomPosition;
+        this.nextColumnNode.setPosition(startX, this.canvasBottomY + columnHeight / 2, 0);
         this.nextColumnNode.setSiblingIndex(2); 
     }
 
@@ -106,20 +114,24 @@ export class GameView extends Component {
             if (instant) {
                 this.playerNode.setPosition(x, this.playerNode.position.y, 0);
             } else {
-                tween(this.playerNode).to(0.8, { position: new Vec3(x, this.playerNode.position.y, 0) }).start();
+                tween(this.playerNode).to(0.3, { position: new Vec3(x, this.playerNode.position.y, 0) }).start();
             }
         }
     }
 
     createStick(startX: number, startY: number) {
-        if (this.stickNode) return;
+        if (this.stickNode) {
+            this.stickNode.destroy();
+            this.stickNode = null;
+        }
         this.stickNode = instantiate(this.stickPrefab);
         const canvas = director.getScene().getChildByName("Canvas");
         this.stickNode.setParent(canvas);
         this.stickNode.setPosition(startX, startY, 0);
         this.stickNode.getComponent(UITransform)!.anchorY = 0;
         this.stickNode.setScale(new Vec3(1, 0, 1));
-        this.stickNode.setSiblingIndex(3); 
+        this.stickNode.angle = 0;
+        this.stickNode.setSiblingIndex(5);
     }
 
     updateStick(scaleY: number, angle: number) {
@@ -163,11 +175,43 @@ export class GameView extends Component {
 
     updateColumns(startX: number, nextX: number) {
         if (this.startColumnNode) {
-            this.startColumnNode.setPosition(startX, this.startColumnNode.position.y, 0);
+            tween(this.startColumnNode).to(0.3, { position: new Vec3(startX, this.startColumnNode.position.y, 0) }).start();
         }
         if (this.nextColumnNode) {
-            this.nextColumnNode.setPosition(nextX, this.nextColumnNode.position.y, 0);
+            tween(this.nextColumnNode).to(0.3, { position: new Vec3(nextX, this.nextColumnNode.position.y, 0) }).start();
         }
+    }
+
+    animateSceneShift(_oldStartX: number, newStartX: number, playerX: number, nextX: number, callback?: () => void) {
+        const tweens: any[] = [];
+
+        if (this.startColumnNode) {
+            tweens.push(
+                tween(this.startColumnNode).to(0.3, { position: new Vec3(newStartX, this.startColumnNode.position.y, 0) })
+            );
+        }
+        if (this.nextColumnNode) {
+            tweens.push(
+                tween(this.nextColumnNode).to(0.3, { position: new Vec3(nextX, this.nextColumnNode.position.y, 0) })
+            );
+        }
+        if (this.playerNode) {
+            tweens.push(
+                tween(this.playerNode).to(0.3, { position: new Vec3(playerX, this.playerNode.position.y, 0) })
+            );
+        }
+
+        tween(this.node)
+            .parallel(...tweens)
+            .call(() => {
+                if (callback) callback();
+            })
+            .start();
+    }
+
+    updateColumnReferences(newStartColumn: Node, newNextColumn: Node | null) {
+        this.startColumnNode = newStartColumn;
+        this.nextColumnNode = newNextColumn;
     }
 
     public onStartButtonPressed() {
