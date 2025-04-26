@@ -5,7 +5,13 @@
       "polyfills": {
         "asyncFunctions": true
       },
-      "outputName": "build1"
+      "outputName": "web-desktop",
+      "buildPath": "project://build",
+      "mainBundleCompressionType": "merge_dep",
+      "platform": "web-desktop",
+      "mainBundleIsRemote": false,
+      "debug": false,
+      "experimentalEraseModules": false
     },
     "taskOptionsMap": {
       "1745634452639": {
@@ -33,6 +39,14 @@
         "__version__": "1.0.1"
       },
       "1745690838143": {
+        "useWebGPU": false,
+        "resolution": {
+          "designWidth": 720,
+          "designHeight": 1280
+        },
+        "__version__": "1.0.1"
+      },
+      "1745693511035": {
         "useWebGPU": false,
         "resolution": {
           "designWidth": 720,
