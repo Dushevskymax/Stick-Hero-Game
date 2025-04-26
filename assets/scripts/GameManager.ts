@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Prefab, input, Input, director, UITransform } from 'cc';
+import { _decorator, Component, Node, Prefab, input, Input, UITransform } from 'cc';
 import { IGameModel, IGameView } from './Interfaces';
 import { GameModel } from './GameModel';
 import { GameView } from './GameView';
@@ -17,115 +17,78 @@ export class GameManager extends Component {
     private model: IGameModel = new GameModel();
     private view: IGameView | null = null;
     private isPlaying: boolean = false;
-    private growthSpeed: number = 2.5;
-    private maxHeight: number = 1000;
     private currentScaleY: number = 0;
     @property({ type: Boolean }) isRetry: boolean = false;
     private isTransitioning: boolean = false;
     private lastDestroyedColumn: Node | null = null;
 
     start() {
-        console.log("GameManager start called");
         input.on(Input.EventType.TOUCH_START, this.onTouchStart, this);
         input.on(Input.EventType.TOUCH_END, this.onTouchEnd, this);
         this.isRetry = false;
         this.model.reset();
-        console.log(`Initial score after start: ${this.model.getScore()}`);
     }
 
     private resetGame() {
         this.isPlaying = false;
         this.model.reset();
-        console.log(`Score after resetGame: ${this.model.getScore()}`);
         this.view!.resetScene();
 
-        if (!this.view) {
-            console.error("View is null in resetGame");
-            return;
-        }
-
-        const canvasWidth = this.view.getCanvasWidth();
-        const startColumnWidth = this.view.getStartColumnNode()!.getComponent(UITransform)!.width;
-        const playerWidth = this.view.getPlayerNode()!.getComponent(UITransform)!.width;
-        const startColumnX = -canvasWidth / 2 + startColumnWidth / 2;
-        const playerX = startColumnX + playerWidth / 4;
+        const startColumnX = -this.view!.getCanvasWidth() / 2 + this.getNodeWidth(this.view!.getStartColumnNode()!) / 2;
+        const playerX = startColumnX + this.getNodeWidth(this.view!.getPlayerNode()!) / 4;
 
         this.model.setStartColumnX(startColumnX);
         this.model.setPlayerX(playerX);
 
         if (this.isRetry) {
-            this.view.setupNextColumn(true);
-            const nextColumnX = this.view.randomPosition - canvasWidth;
-            this.model.setNextColumnX(nextColumnX);
-            this.view.getStartColumnNode()!.setPosition(startColumnX, this.view.getStartColumnNode()!.position.y, 0);
-            this.view.getNextColumnNode()!.setPosition(nextColumnX, this.view.getNextColumnNode()!.position.y, 0);
-            this.view.updatePlayer(playerX, true);
+            this.view!.setupNextColumn(startColumnX);
+            this.model.setNextColumnX(this.view!.randomPosition);
+            this.view!.getStartColumnNode()!.setPosition(startColumnX, this.view!.getStartColumnNode()!.position.y, 0);
+            this.view!.getNextColumnNode()!.setPosition(this.view!.randomPosition, this.view!.getNextColumnNode()!.position.y, 0);
+            this.view!.updatePlayer(playerX, true);
         }
 
-        this.view.showStartScreen();
-        console.log(`Score after resetGame completed: ${this.model.getScore()}`);
+        this.view!.showStartScreen();
     }
 
     onStartButton() {
-        console.log("onStartButton called");
-
         if (!this.view) {
-            if (!this.gameView) {
-                console.error("gameView is not assigned in the editor! Please assign GameView component in Cocos Creator.");
-                return;
-            }
+            if (!this.gameView) throw new Error("gameView is not assigned!");
             this.view = this.gameView;
         }
 
         this.isPlaying = true;
         this.view.showPlayScreen();
 
-        const canvasWidth = this.view.getCanvasWidth();
-        const startColumnWidth = this.view.getStartColumnNode()!.getComponent(UITransform)!.width;
-        const playerWidth = this.view.getPlayerNode()!.getComponent(UITransform)!.width;
-        const startColumnX = -canvasWidth / 2 + startColumnWidth / 2;
-        const playerX = startColumnX + playerWidth / 4;
+        const startColumnX = -this.view.getCanvasWidth() / 2 + this.getNodeWidth(this.view.getStartColumnNode()!) / 2;
+        const playerX = startColumnX + this.getNodeWidth(this.view.getPlayerNode()!) / 4;
 
-        let nextColumnX: number;
         if (!this.isRetry) {
-            this.view.setupNextColumn();
-            nextColumnX = this.view.randomPosition - canvasWidth;
+            this.view.setupNextColumn(startColumnX);
+            const nextColumnX = this.view.randomPosition;
             this.model.setStartColumnX(startColumnX);
             this.model.setPlayerX(playerX);
             this.model.setNextColumnX(nextColumnX);
             this.view.animateInitialSetup(startColumnX, playerX, nextColumnX);
-        } else {
-            nextColumnX = this.model.getNextColumnX();
         }
-        console.log(`Score after onStartButton: ${this.model.getScore()}`);
+
         (this.view as GameView).updateScoreDisplay(this.model.getScore());
     }
 
     onRetryButtonPressed() {
-        console.log("onRetryButtonPressed called");
-        console.log(`Score before retry: ${this.model.getScore()}`);
         this.isRetry = true;
         this.resetGame();
         this.onStartButton();
-        console.log(`Score after retry: ${this.model.getScore()}`);
     }
 
     private onTouchStart() {
         if (!this.isPlaying || this.model.isStickGrowing() || this.isTransitioning) return;
-        const startColumnNode = this.view?.getStartColumnNode();
-        if (!startColumnNode) {
-            console.error("Start column node is null in onTouchStart");
-            return;
-        }
+        const startColumn = this.view!.getStartColumnNode()!;
         this.model.setStickGrowing(true);
-        this.currentScaleY = 0;
-        const startColumnX = this.model.getStartColumnX();
-        const startColumnWidth = startColumnNode.getComponent(UITransform)!.width;
-        const startColumnHeight = startColumnNode.getComponent(UITransform)!.height;
-        const startX = startColumnX + startColumnWidth / 2;
-        const startY = startColumnNode.position.y + startColumnHeight / 2;
+        this.currentScaleY = 0.1; 
+        const startX = this.model.getStartColumnX() + this.getNodeWidth(startColumn) / 2;
+        const startY = startColumn.position.y + this.getNodeHeight(startColumn) / 2;
         this.view!.createStick(startX, startY);
-        this.view!.updateStick(this.currentScaleY, this.model.getStickAngle());
     }
 
     private onTouchEnd() {
@@ -140,55 +103,39 @@ export class GameManager extends Component {
             const nextColumn = this.view!.getNextColumnNode()!;
             const player = this.view!.getPlayerNode()!;
 
-            const startTransform = startColumn.getComponent(UITransform)!;
-            const nextTransform = nextColumn.getComponent(UITransform)!;
-            const stickTransform = stick.getComponent(UITransform)!;
-
-            const startPos = startColumn.position;
-            const nextPos = nextColumn.position;
-
-            const startRightX = startPos.x + startTransform.width / 2;
-            const stickLength = stickTransform.height * stick.scale.y;
+            const startRightX = startColumn.position.x + this.getNodeWidth(startColumn) / 2;
+            const stickLength = this.getNodeHeight(stick) * stick.scale.y;
             const stickEndX = startRightX + stickLength;
 
             (this.view as GameView).animatePlayerToStickEnd(stickEndX, () => {
-                const nextLeftX = nextPos.x - nextTransform.width / 2;
-                const nextRightX = nextPos.x + nextTransform.width / 2;
+                const nextLeftX = nextColumn.position.x - this.getNodeWidth(nextColumn) / 2;
+                const nextRightX = nextColumn.position.x + this.getNodeWidth(nextColumn) / 2;
 
                 if (stickEndX >= nextLeftX && stickEndX <= nextRightX) {
-                    const playerWidth = player.getComponent(UITransform)!.width;
-                    const playerX = nextPos.x + playerWidth / 4;
+                    const playerX = nextColumn.position.x + this.getNodeWidth(player) / 4;
                     this.view!.updatePlayer(playerX, false);
 
-                    const canvasWidth = this.view!.getCanvasWidth();
-                    const nextColumnWidth = nextColumn.getComponent(UITransform)!.width;
-                    const newStartColumnX = -canvasWidth / 2 + nextColumnWidth / 2;
-                    const offset = nextPos.x - newStartColumnX;
+                    const newStartColumnX = -this.view!.getCanvasWidth() / 2 + this.getNodeWidth(nextColumn) / 2;
+                    const offset = nextColumn.position.x - newStartColumnX;
                     const newPlayerX = playerX - offset;
 
                     this.isTransitioning = true;
+                    this.view!.stickNode?.destroy();
+                    this.view!.stickNode = null;
 
-                    if (this.view!.stickNode) {
-                        this.view!.stickNode.destroy();
-                        this.view!.stickNode = null;
-                    }
-
-                    console.log("Attempting to destroy old startColumn");
-                    startColumn.removeFromParent(); 
+                    startColumn.removeFromParent();
                     startColumn.destroy();
-                    this.lastDestroyedColumn = startColumn; 
+                    this.lastDestroyedColumn = startColumn;
 
                     this.view!.updateColumnReferences(nextColumn, null);
-
-                    this.view!.setupNextColumn();
-                    const newNextColumnX = this.view!.randomPosition - canvasWidth;
+                    this.view!.setupNextColumn(newStartColumnX);
+                    const newNextColumnX = this.view!.randomPosition;
                     this.model.setNextColumnX(newNextColumnX);
 
                     (this.view as GameView).animateSceneShift(0, newStartColumnX, newPlayerX, newNextColumnX, () => {
                         this.model.setStartColumnX(newStartColumnX);
                         this.model.setPlayerX(newPlayerX);
                         this.model.incrementScore();
-                        console.log(`Score incremented to: ${this.model.getScore()}`);
                         (this.view as GameView).updateScoreDisplay(this.model.getScore());
                         this.isTransitioning = false;
                     });
@@ -196,7 +143,6 @@ export class GameManager extends Component {
                     AnimationHelper.animatePlayerFall(player, () => {
                         this.isPlaying = false;
                         this.view!.showGameOverScreen(this.model.getScore());
-                        console.log(`Game Over - Final Score: ${this.model.getScore()}`);
                     });
                 }
             });
@@ -204,27 +150,24 @@ export class GameManager extends Component {
             console.error("Ошибка в checkResult:", error);
             this.isPlaying = false;
             this.view!.showGameOverScreen(this.model.getScore());
-            console.log(`Game Over (error) - Final Score: ${this.model.getScore()}`);
         }
     }
 
     update(deltaTime: number) {
         if (this.lastDestroyedColumn) {
-            if (this.lastDestroyedColumn.isValid) {
-                console.error("Old startColumn is still valid in update!");
-            } else {
-                console.log("Old startColumn successfully destroyed in update");
-                this.lastDestroyedColumn = null; 
-            }
+            console.log(this.lastDestroyedColumn.isValid
+                ? "Old startColumn is still valid!"
+                : "Old startColumn successfully destroyed");
+            this.lastDestroyedColumn = null;
         }
 
         if (!this.isPlaying || !this.model.isStickGrowing() || !this.view?.stickNode) return;
 
-        const stickTransform = this.view.stickNode.getComponent(UITransform)!;
-        const maxScaleY = this.maxHeight / stickTransform.height;
+        const stick = this.view.stickNode;
+        const maxScaleY = 1000 / this.getNodeHeight(stick);
         const growthSpeed = (this.view as GameView).getGrowthSpeed();
+        this.currentScaleY += growthSpeed * deltaTime;
 
-        this.currentScaleY += this.growthSpeed * deltaTime;
         if (this.currentScaleY >= maxScaleY) {
             this.currentScaleY = maxScaleY;
             this.model.setStickGrowing(false);
@@ -232,5 +175,14 @@ export class GameManager extends Component {
         }
 
         this.view.updateStick(this.currentScaleY, this.model.getStickAngle());
+        console.log(`Stick growth speed: ${growthSpeed}`);
+    }
+
+    private getNodeWidth(node: Node): number {
+        return node.getComponent(UITransform)!.width;
+    }
+
+    private getNodeHeight(node: Node): number {
+        return node.getComponent(UITransform)!.height;
     }
 }

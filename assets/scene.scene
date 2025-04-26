@@ -776,7 +776,7 @@
       "__uuid__": "c910665d-8c8d-4536-bd95-a1ed60ecd442",
       "__expectedType__": "cc.Prefab"
     },
-    "growthSpeed": 0,
+    "growthSpeed": 10,
     "maxHeight": 1000,
     "scoreLabel": {
       "__id__": 37

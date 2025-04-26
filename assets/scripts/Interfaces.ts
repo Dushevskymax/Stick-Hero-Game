@@ -11,27 +11,25 @@ export interface IGameModel {
     setStartColumnX(x: number): void;
     getNextColumnX(): number;
     setNextColumnX(x: number): void;
-    getScore(): number; // Добавляем метод для получения очков
-    incrementScore(): void; // Добавляем метод для увеличения очков
+    getScore(): number;
+    incrementScore(): void;
     reset(): void;
 }
 
 export interface IGameView {
     stickNode: Node | null;
+    randomPosition: number;
     updatePlayer(x: number, instant?: boolean): void;
     createStick(startX: number, startY: number): void;
     updateStick(scaleY: number, angle: number): void;
-    updateColumns(startX: number, nextX: number): void;
     updateColumnReferences(newStartColumn: Node, newNextColumn: Node | null): void;
     animateSceneShift(oldStartX: number, newStartX: number, playerX: number, nextX: number, callback?: () => void): void;
     showStartScreen(): void;
     showPlayScreen(): void;
+    showGameOverScreen(score: number): void;
     dropStick(instant: boolean, callback: (stick: Node) => void): void;
-    randomPosition: number;
     animateInitialSetup(startColumnX: number, playerX: number, nextColumnX: number): void;
-    setupNextColumn(instant?: boolean): void;
-    showGameOverScreen(score: number): void; 
-    animateNewColumn(targetX: number): void;
+    setupNextColumn(futureStartColumnX?: number): void;
     getGrowthSpeed(): number;
     getStartColumnNode(): Node | null;
     getNextColumnNode(): Node | null;
@@ -39,4 +37,5 @@ export interface IGameView {
     getCanvasWidth(): number;
     resetScene(): void;
     animatePlayerToStickEnd(stickEndX: number, callback: () => void): void;
+    updateScoreDisplay(score: number): void;
 }
