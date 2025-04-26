@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, UITransform, Vec3, director, tween, instantiate, Prefab } from 'cc';
+import { _decorator, Component, Node, UITransform, Vec3, director, tween, instantiate, Prefab, Label } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('GameView')
@@ -11,6 +11,8 @@ export class GameView extends Component {
     @property(Prefab) columnPrefab: Prefab = null;
     @property({ type: Number }) growthSpeed: number = 0;
     @property({ type: Number }) maxHeight: number = 1000;
+    @property(Label) scoreLabel: Label | null = null;
+    @property(Label) currentScoreLabel: Label | null = null;
 
     private playerNode: Node | null = null;
     public stickNode: Node | null = null;
@@ -34,6 +36,13 @@ export class GameView extends Component {
 
         this.setupScene();
         this.showStartScreen();
+
+        if (!this.currentScoreLabel) {
+            console.error("GameView: currentScoreLabel is not assigned in the editor! Please assign a Label component to currentScoreLabel in Cocos Creator.");
+        }
+        if (!this.scoreLabel) {
+            console.error("GameView: scoreLabel is not assigned in the editor! Please assign a Label component to scoreLabel in Cocos Creator.");
+        }
     }
 
     public resetScene() {
@@ -178,7 +187,7 @@ export class GameView extends Component {
             tween(this.startColumnNode).to(0.3, { position: new Vec3(startX, this.startColumnNode.position.y, 0) }).start();
         }
         if (this.nextColumnNode) {
-            tween(this.nextColumnNode).to(0.3, { position: new Vec3(nextX, this.nextColumnNode.position.y, 0) }).start();
+            tween(this.nextColumnNode).to(0.3, { position: new Vec3(nextX, this.startColumnNode.position.y, 0) }).start();
         }
     }
 
@@ -220,7 +229,7 @@ export class GameView extends Component {
         const canvasWidth = this.getCanvasWidth();
         const startColumnWidth = this.getStartColumnNode()!.getComponent(UITransform)!.width;
         const playerWidth = this.getPlayerNode()!.getComponent(UITransform)!.width;
-        const startColumnX = -canvasWidth / 2 + startColumnWidth;
+        const startColumnX = -canvasWidth / 2 + startColumnWidth / 2;
         const playerX = startColumnX + playerWidth / 4;
         const nextColumnX = this.randomPosition - canvasWidth;
 
@@ -232,18 +241,46 @@ export class GameView extends Component {
         this.startScreen.active = true;
         this.playScreen.active = false;
         this.gameOverScreen.active = false;
+        if (this.currentScoreLabel) {
+            this.currentScoreLabel.string = `0`; 
+            console.log("GameView: Current score display reset to 0 on start screen");
+        } else {
+            console.warn("GameView: currentScoreLabel is null in showStartScreen");
+        }
     }
 
     showPlayScreen() {
         this.playScreen.active = true;
         this.startScreen.active = false;
         this.gameOverScreen.active = false;
+        if (this.currentScoreLabel) {
+            this.currentScoreLabel.string = `0`; 
+            console.log("GameView: Current score display initialized to 0 on play screen");
+        } else {
+            console.warn("GameView: currentScoreLabel is null in showPlayScreen");
+        }
     }
 
-    showGameOverScreen() {
+    showGameOverScreen(score: number) {
         this.gameOverScreen.active = true;
         this.startScreen.active = false;
         this.playScreen.active = false;
+        console.log(`GameView: Activating gameOverScreen, active state: ${this.gameOverScreen.active}`);
+        if (this.scoreLabel) {
+            this.scoreLabel.string = `Score: ${score}`;
+            console.log(`GameView: Game over screen showing score: ${score}`);
+        } else {
+            console.warn("GameView: scoreLabel is null in showGameOverScreen");
+        }
+    }
+
+    public updateScoreDisplay(score: number) {
+        if (this.currentScoreLabel) {
+            this.currentScoreLabel.string = `${score}`;
+            console.log(`GameView: Current score display updated to: ${score}`);
+        } else {
+            console.warn("GameView: currentScoreLabel is null in updateScoreDisplay");
+        }
     }
 
     public getGrowthSpeed(): number {

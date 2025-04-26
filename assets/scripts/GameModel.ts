@@ -6,6 +6,7 @@ export class GameModel implements IGameModel {
     private stickAngle: number = 0;
     private startColumnX: number = 0;
     private nextColumnX: number = 0;
+    private score: number = 0;
 
     getPlayerX(): number {
         return this.playerX;
@@ -47,11 +48,22 @@ export class GameModel implements IGameModel {
         this.nextColumnX = x;
     }
 
+    getScore(): number {
+        return this.score;
+    }
+
+    incrementScore(): void {
+        this.score += 1;
+        console.log(`GameModel: Score incremented to ${this.score}`); 
+    }
+
     reset(): void {
         this.playerX = 0;
         this.stickGrowing = false;
         this.stickAngle = 0;
         this.startColumnX = 0;
         this.nextColumnX = 0;
+        this.score = 0;
+        console.log("GameModel: Score reset to 0"); 
     }
 }

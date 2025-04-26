@@ -11,6 +11,8 @@ export interface IGameModel {
     setStartColumnX(x: number): void;
     getNextColumnX(): number;
     setNextColumnX(x: number): void;
+    getScore(): number; // Добавляем метод для получения очков
+    incrementScore(): void; // Добавляем метод для увеличения очков
     reset(): void;
 }
 
@@ -28,7 +30,7 @@ export interface IGameView {
     randomPosition: number;
     animateInitialSetup(startColumnX: number, playerX: number, nextColumnX: number): void;
     setupNextColumn(instant?: boolean): void;
-    showGameOverScreen(): void;
+    showGameOverScreen(score: number): void; 
     animateNewColumn(targetX: number): void;
     getGrowthSpeed(): number;
     getStartColumnNode(): Node | null;

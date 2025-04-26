@@ -20,7 +20,7 @@ export class GameManager extends Component {
     private growthSpeed: number = 2.5;
     private maxHeight: number = 1000;
     private currentScaleY: number = 0;
-    private isRetry: boolean = false;
+    @property({ type: Boolean }) isRetry: boolean = false;
     private isTransitioning: boolean = false;
     private lastDestroyedColumn: Node | null = null;
 
@@ -30,11 +30,13 @@ export class GameManager extends Component {
         input.on(Input.EventType.TOUCH_END, this.onTouchEnd, this);
         this.isRetry = false;
         this.model.reset();
+        console.log(`Initial score after start: ${this.model.getScore()}`);
     }
 
     private resetGame() {
         this.isPlaying = false;
         this.model.reset();
+        console.log(`Score after resetGame: ${this.model.getScore()}`);
         this.view!.resetScene();
 
         if (!this.view) {
@@ -61,6 +63,7 @@ export class GameManager extends Component {
         }
 
         this.view.showStartScreen();
+        console.log(`Score after resetGame completed: ${this.model.getScore()}`);
     }
 
     onStartButton() {
@@ -94,13 +97,17 @@ export class GameManager extends Component {
         } else {
             nextColumnX = this.model.getNextColumnX();
         }
+        console.log(`Score after onStartButton: ${this.model.getScore()}`);
+        (this.view as GameView).updateScoreDisplay(this.model.getScore());
     }
 
     onRetryButtonPressed() {
         console.log("onRetryButtonPressed called");
+        console.log(`Score before retry: ${this.model.getScore()}`);
         this.isRetry = true;
         this.resetGame();
         this.onStartButton();
+        console.log(`Score after retry: ${this.model.getScore()}`);
     }
 
     private onTouchStart() {
@@ -171,7 +178,6 @@ export class GameManager extends Component {
                     startColumn.destroy();
                     this.lastDestroyedColumn = startColumn; 
 
-                   
                     this.view!.updateColumnReferences(nextColumn, null);
 
                     this.view!.setupNextColumn();
@@ -181,19 +187,24 @@ export class GameManager extends Component {
                     (this.view as GameView).animateSceneShift(0, newStartColumnX, newPlayerX, newNextColumnX, () => {
                         this.model.setStartColumnX(newStartColumnX);
                         this.model.setPlayerX(newPlayerX);
+                        this.model.incrementScore();
+                        console.log(`Score incremented to: ${this.model.getScore()}`);
+                        (this.view as GameView).updateScoreDisplay(this.model.getScore());
                         this.isTransitioning = false;
                     });
                 } else {
                     AnimationHelper.animatePlayerFall(player, () => {
                         this.isPlaying = false;
-                        this.view!.showGameOverScreen();
+                        this.view!.showGameOverScreen(this.model.getScore());
+                        console.log(`Game Over - Final Score: ${this.model.getScore()}`);
                     });
                 }
             });
         } catch (error) {
             console.error("Ошибка в checkResult:", error);
             this.isPlaying = false;
-            this.view!.showGameOverScreen();
+            this.view!.showGameOverScreen(this.model.getScore());
+            console.log(`Game Over (error) - Final Score: ${this.model.getScore()}`);
         }
     }
 
