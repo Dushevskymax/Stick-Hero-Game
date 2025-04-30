@@ -5,61 +5,61 @@ export class GameModel {
     private startColumnX: number = 0;
     private nextColumnX: number = 0;
     private score: number = 0;
-
+  
     getPlayerX(): number {
-        return this.playerX;
+      return this.playerX;
     }
-
+  
     setPlayerX(x: number): void {
-        this.playerX = x;
+      this.playerX = x;
     }
-
+  
     isStickGrowing(): boolean {
-        return this.stickGrowing;
+      return this.stickGrowing;
     }
-
+  
     setStickGrowing(growing: boolean): void {
-        this.stickGrowing = growing;
+      this.stickGrowing = growing;
     }
-
+  
     getStickAngle(): number {
-        return this.stickAngle;
+      return this.stickAngle;
     }
-
+  
     setStickAngle(angle: number): void {
-        this.stickAngle = angle;
+      this.stickAngle = angle;
     }
-
+  
     getStartColumnX(): number {
-        return this.startColumnX;
+      return this.startColumnX;
     }
-
+  
     setStartColumnX(x: number): void {
-        this.startColumnX = x;
+      this.startColumnX = x;
     }
-
+  
     getNextColumnX(): number {
-        return this.nextColumnX;
+      return this.nextColumnX;
     }
-
+  
     setNextColumnX(x: number): void {
-        this.nextColumnX = x;
+      this.nextColumnX = x;
     }
-
+  
     getScore(): number {
-        return this.score;
+      return this.score;
     }
-
+  
     incrementScore(): void {
-        this.score += 1;
+      this.score += 1;
     }
-
+  
     reset(): void {
-        this.playerX = 0;
-        this.stickGrowing = false;
-        this.stickAngle = 0;
-        this.startColumnX = 0;
-        this.nextColumnX = 0;
-        this.score = 0;
+      this.playerX = 0;
+      this.stickGrowing = false;
+      this.stickAngle = 0;
+      this.startColumnX = 0;
+      this.nextColumnX = 0;
+      this.score = 0;
     }
-}
+  }
