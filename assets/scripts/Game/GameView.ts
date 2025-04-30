@@ -45,7 +45,7 @@ export class GameView extends Component {
   public randomPosition: number = 0;
 
   start(): void {
-    this.setScreenIndices();
+    this.setScreenIndexes();
     this.prefabColumnWidth = this.getNodeWidth(instantiate(this.columnPrefab));
     this.setupScene();
     this.showStartScreen();
@@ -128,8 +128,6 @@ export class GameView extends Component {
     this.stickNode.getComponent(UITransform)!.anchorY = 0;
     this.stickNode.setScale(new Vec3(1, 0.1, 1));
     this.stickNode.angle = 0;
-    console.log(`Stick created at position: (${startX}, ${startY})`);
-    console.log(`Canvas size: (${this.canvasWidth}, ${this.getNodeHeight(this.getCanvas())})`);
   }
 
   updateStick(scaleY: number, angle: number): void {
@@ -185,7 +183,7 @@ export class GameView extends Component {
     return this.canvasWidth;
   }
 
-  private setScreenIndices(): void {
+  private setScreenIndexes(): void {
     this.startScreen.setSiblingIndex(10);
     this.playScreen.setSiblingIndex(11);
     this.gameOverScreen.setSiblingIndex(12);

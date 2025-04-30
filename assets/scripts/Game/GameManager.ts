@@ -4,7 +4,6 @@ import { AnimationHelper } from '../Utils/AnimationHelper';
 import { ErrorHandler } from '../Utils/ErrorHandler';
 import { GameModel } from './GameModel';
 import { GameView } from './GameView';
-import { PositionCalculator } from '../Utils/PositionCalculator';
 
 const { ccclass, property } = _decorator;
 
